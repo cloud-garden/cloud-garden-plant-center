@@ -25,7 +25,7 @@ public class JaxAdapter {
 			e.printStackTrace();
 		}
 		System.out.println("new wsc: " + wsc);
-		return Response.status(200).entity("<return>successaa</return>").build();
+		return Response.status(200).entity("<return>success</return>").build();
 	}
 
 	@GET
@@ -41,8 +41,14 @@ public class JaxAdapter {
 	@Produces({MediaType.APPLICATION_XML})
 	@Path("/tmpsendTandH")
 	public Response sendTandH() {
+		System.out.println("in /tmpsendTandH");
 		String message = DevicesController.getTemperatureAndHumidity();
-		wsc.sendMessage(message);
+		//wsc.sendMessage(message);
+		RestClient client = new RestClient("superuser", "superuser");
+
+		String uri = "http://54.199.139.148/cloud_garden_server/api/submitTemperatureAndHumidiy";
+		client.post(uri, message, String.class, MediaType.APPLICATION_JSON_TYPE);
+
 		return Response.status(200).entity("<return>"+ message +"</return>").build();
 	}
 
@@ -50,8 +56,14 @@ public class JaxAdapter {
 	@Produces({MediaType.APPLICATION_XML})
 	@Path("/tmpsendImage")
 	public Response sendImage() {
+		System.out.println("in /tmpsendImage");
 		String message = DevicesController.getImage();
-		wsc.sendMessage(message);
+		//wsc.sendMessage(message);
+		RestClient client = new RestClient("superuser", "superuser");
+
+		String uri = "http://54.199.139.148/cloud_garden_server/api/submitImage";
+		client.post(uri, message, String.class, MediaType.APPLICATION_JSON_TYPE);
+
 		return Response.status(200).entity("<return>"+ message +"</return>").build();
 	}
 
