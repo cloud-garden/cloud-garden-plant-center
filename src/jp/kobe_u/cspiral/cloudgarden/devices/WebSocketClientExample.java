@@ -43,14 +43,19 @@ public class WebSocketClientExample {
 		}
 		switch (method) {
 		case "getTemperatureAndHumidity":
+			System.out.println("get request of temperature and humidty");
+			System.out.println(message);
 			sendMessage(DevicesController.getTemperatureAndHumidity());
 			break;
 
 		case "getImage":
+			System.out.println("get request of image");
+			System.out.println(message);
 			sendMessage(DevicesController.getImage());
 			break;
 
 		default:
+			System.out.println(message);
 			break;
 		}
 	}
@@ -61,6 +66,7 @@ public class WebSocketClientExample {
 
 	public void close() {
 		//todo: serverでclose処理が必要
+		sendMessage("{\"request\": \"close\"}");
 		this.userSession = null;
 	}
 
