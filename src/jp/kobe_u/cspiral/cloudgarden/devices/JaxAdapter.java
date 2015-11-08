@@ -75,22 +75,26 @@ public class JaxAdapter {
 	@Path("/updateState")
 	public Response updateState() {
 		System.out.println("in /updateState");
-		Client c = Client.create();
-
-		//接続するアドレス
-        WebResource resource = c.resource(
-                "http://54.199.139.148/cloud_garden_server/api/updateState"
-                );
-		String jsonText = DevicesController.getState();
-        String response = resource.type(MediaType.APPLICATION_JSON_TYPE).
-                post(String.class, jsonText);
-        System.out.println("----------------------------");
-        System.out.println("★パラメータ");
-        System.out.println(jsonText);
-        System.out.println("★結果");
-        System.out.println(response);
-
+		String jsonText = MainDriver.updateState();
 		return Response.status(200).entity("<return>"+ jsonText +"</return>").build();
+	}
+
+	@GET
+	@Produces({MediaType.APPLICATION_XML})
+	@Path("startUpdating")
+	public Response startUpdating() {
+		System.out.println("in /startUpdating");
+		MainDriver.startUpdating();
+		return Response.status(200).entity("<return>success</return>").build();
+	}
+
+	@GET
+	@Produces({MediaType.APPLICATION_XML})
+	@Path("stopUpdating")
+	public Response stopUpdating() {
+		System.out.println("in /stopUpdating");
+		MainDriver.stopUpdating();
+		return Response.status(200).entity("<return>success</return>").build();
 	}
 
 }

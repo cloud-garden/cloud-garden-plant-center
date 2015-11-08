@@ -99,8 +99,9 @@ public class DevicesController {
 				baos.close();
 				byte[] b64 = Base64.encodeBase64(imageInByte);
 				String imageInMime = new String(b64);
+				System.out.println("temperature: " + temperature + "  humidity: " + humidity);
 				System.out.println(imageInMime);
-				return "{\"status\": \"success\", \"temperature\": \""+ temperature +"\", \"humidity\":\"" + humidity + "\", \"image\": \""+ imageInMime +"\"}";
+				return "{\"temperature\": \""+ temperature +"\", \"humidity\":\"" + humidity + "\", \"image\": \""+ imageInMime +"\"}";
 			} catch (IOException e) {
 				e.printStackTrace();
 				return "{\"status\": \"failure\", \"message\": \"画像データの変換に失敗しました\"}";

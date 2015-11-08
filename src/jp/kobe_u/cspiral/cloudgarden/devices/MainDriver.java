@@ -1,32 +1,51 @@
 package jp.kobe_u.cspiral.cloudgarden.devices;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import javax.ws.rs.core.MediaType;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
 
 public class MainDriver {
+	private static boolean updating = false;
 
-	public static void main____(String args[]) {
+	public static void loopUpdating() {
 		try {
-			WebSocketClientExample wsc = new WebSocketClientExample(new URI("ws://localhost:8080/tinychat_with_jaxrs/api/ws"));
-
-			int i = 0;
-			Thread.sleep(1000);
-			wsc.sendMessage("{\"uid\": \"tobao\", \"body\":\"" + ++i + "\"}");
-
-			Thread.sleep(1000);
-			wsc.sendMessage("{\"uid\": \"tobao\", \"body\":\"" + ++i + "\"}");
-
-			Thread.sleep(1000);
-			wsc.sendMessage("{\"uid\": \"tobao\", \"body\":\"" + ++i + "\"}");
-
-
-			Thread.sleep(10000);
-		} catch (URISyntaxException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+			while(updating){
+				String json = updateState();
+				System.out.println(json);
+				Thread.sleep(10000);
+			}
 		} catch (InterruptedException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
+	}
+
+	public static String updateState(){
+		Client c = Client.create();
+
+		//接続するアドレス
+        WebResource resource = c.resource(
+                "http://54.199.139.148/cloud_garden_server/api/updateState"
+                );
+		String jsonText = DevicesController.getState();
+        String response = resource.type(MediaType.APPLICATION_JSON_TYPE).
+                post(String.class, jsonText);
+        System.out.println("response: " + response);
+//        System.out.println("----------------------------");
+//        System.out.println("★パラメータ");
+//        System.out.println(jsonText);
+//        System.out.println("★結果");
+//        System.out.println(response);
+        return jsonText;
+	}
+
+	public static void startUpdating(){
+		updating = true;
+		loopUpdating();
+	}
+
+	public static void stopUpdating(){
+		updating = false;
+		loopUpdating();
 	}
 }
