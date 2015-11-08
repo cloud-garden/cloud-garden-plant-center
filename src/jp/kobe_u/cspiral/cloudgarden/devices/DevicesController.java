@@ -10,7 +10,9 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.github.sarxos.webcam.Webcam;
 import com.phidgets.InterfaceKitPhidget;
+import com.phidgets.Phidget;
 import com.phidgets.PhidgetException;
+import com.phidgets.ServoPhidget;
 
 
 public class DevicesController {
@@ -114,5 +116,37 @@ public class DevicesController {
 
 
 	//TODO: 水をあげるメソッド
+	public static boolean executeWatering(){
+		ServoPhidget servo;
+
+		try {
+			servo = new ServoPhidget();
+
+			servo.openAny();
+			System.out.println("waiting for Servo attachment...");
+			servo.waitForAttachment();
+
+			System.out.println("waterin...");
+			servo.setPosition(0, 130);
+			Thread.sleep(1000);
+			servo.setPosition(0, 220);
+			Thread.sleep(3000);
+			servo.setPosition(0, 130);
+
+			System.out.print("closing...");
+			servo.close();
+			servo = null;
+			System.out.println(" ok");
+		} catch (PhidgetException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			return false;
+		} catch (InterruptedException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 
 }

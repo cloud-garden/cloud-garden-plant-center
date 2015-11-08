@@ -2,6 +2,9 @@ package jp.kobe_u.cspiral.cloudgarden.devices;
 
 import javax.ws.rs.core.MediaType;
 
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 
@@ -31,11 +34,25 @@ public class MainDriver {
         String response = resource.type(MediaType.APPLICATION_JSON_TYPE).
                 post(String.class, jsonText);
         System.out.println("response: " + response);
-//        System.out.println("----------------------------");
-//        System.out.println("★パラメータ");
-//        System.out.println(jsonText);
-//        System.out.println("★結果");
-//        System.out.println(response);
+
+        JSONObject jsonResponse;
+		try {
+			jsonResponse = new JSONObject(response);
+			boolean needWatering = Boolean.parseBoolean((String)jsonResponse.get("watering"));
+			if(needWatering){
+				System.out.println("need watering");
+				DevicesController.executeWatering();
+			}
+	        System.out.println("status: " + jsonResponse.get("status"));
+	        System.out.println("watering: " + jsonResponse.get("watering"));
+	        System.out.println("watering: " + needWatering);
+		} catch (JSONException e) {
+			System.out.println("exception!");
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		System.out.println("ending");
+
         return jsonText;
 	}
 

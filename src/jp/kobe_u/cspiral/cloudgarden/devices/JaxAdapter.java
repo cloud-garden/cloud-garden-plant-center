@@ -17,6 +17,7 @@ public class JaxAdapter {
 
 	private static WebSocketClientExample wsc;
 
+	//デバッグ用
 	@GET
 	@Produces({MediaType.APPLICATION_XML})
 	@Path("/start")
@@ -31,6 +32,7 @@ public class JaxAdapter {
 		return Response.status(200).entity("<return>success</return>").build();
 	}
 
+	//デバッグ用
 	@GET
 	@Produces({MediaType.APPLICATION_XML})
 	@Path("/stop")
@@ -40,6 +42,7 @@ public class JaxAdapter {
 		return Response.status(200).entity("<return>success</return>").build();
 	}
 
+	//デバッグ用
 	@GET
 	@Produces({MediaType.APPLICATION_XML})
 	@Path("/tmpsendTandH")
@@ -55,6 +58,7 @@ public class JaxAdapter {
 		return Response.status(200).entity("<return>"+ message +"</return>").build();
 	}
 
+	//デバッグ用
 	@GET
 	@Produces({MediaType.APPLICATION_XML})
 	@Path("/tmpsendImage")
@@ -70,6 +74,7 @@ public class JaxAdapter {
 		return Response.status(200).entity("<return>"+ message +"</return>").build();
 	}
 
+	//デバッグ用
 	@GET
 	@Produces({MediaType.APPLICATION_XML})
 	@Path("/updateState")
@@ -77,6 +82,16 @@ public class JaxAdapter {
 		System.out.println("in /updateState");
 		String jsonText = MainDriver.updateState();
 		return Response.status(200).entity("<return>"+ jsonText +"</return>").build();
+	}
+
+	//デバッグ用
+	@GET
+	@Produces({MediaType.APPLICATION_XML})
+	@Path("/wataring")
+	public Response executeWatering() {
+		System.out.println("in /updateState");
+		boolean result = DevicesController.executeWatering();
+		return Response.status(200).entity("<return>"+ result +"</return>").build();
 	}
 
 	@GET
