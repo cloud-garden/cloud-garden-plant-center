@@ -1,5 +1,6 @@
 package jp.kobe_u.cspiral.cloudgarden.devices;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,7 +11,6 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.github.sarxos.webcam.Webcam;
 import com.phidgets.InterfaceKitPhidget;
-import com.phidgets.Phidget;
 import com.phidgets.PhidgetException;
 import com.phidgets.ServoPhidget;
 
@@ -89,10 +89,15 @@ public class DevicesController {
 		Webcam webcam = null;
 		webcam = Webcam.getDefault();
 		if (webcam != null) {
+			int width = 640;
+			int height = 480;
+			System.out.println("width: " + width + ", height: " + height);
+			webcam.setViewSize(new Dimension(width, height));
 			System.out.println("Webcam : " + webcam.getName());
 			webcam.open();
 			BufferedImage image = webcam.getImage();
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			webcam.close();
 
 			try {
 				ImageIO.write(image, "png", baos);
@@ -102,7 +107,7 @@ public class DevicesController {
 				byte[] b64 = Base64.encodeBase64(imageInByte);
 				String imageInMime = new String(b64);
 				System.out.println("temperature: " + temperature + "  humidity: " + humidity);
-				System.out.println(imageInMime);
+				System.out.println(imageInMime.substring(0, 100));
 				return "{\"temperature\": \""+ temperature +"\", \"humidity\":\"" + humidity + "\", \"image\": \""+ imageInMime +"\"}";
 			} catch (IOException e) {
 				e.printStackTrace();

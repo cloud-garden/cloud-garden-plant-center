@@ -87,7 +87,7 @@ public class JaxAdapter {
 	//デバッグ用
 	@GET
 	@Produces({MediaType.APPLICATION_XML})
-	@Path("/wataring")
+	@Path("/watering")
 	public Response executeWatering() {
 		System.out.println("in /updateState");
 		boolean result = DevicesController.executeWatering();

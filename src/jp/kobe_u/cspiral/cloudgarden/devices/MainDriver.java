@@ -15,7 +15,7 @@ public class MainDriver {
 		try {
 			while(updating){
 				String json = updateState();
-				System.out.println(json);
+//				System.out.println(json);
 				Thread.sleep(10000);
 			}
 		} catch (InterruptedException e) {
